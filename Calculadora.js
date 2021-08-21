@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
+import NumericPad from './NumericPad'
 
 export default class Calculadora extends Component {
   constructor(props) {
     super(props);
     this.state = {
         // declaración de todas las variables
+        botones: [
+            '4', '5', '6'
+        ]
     };
+
   }
 
   render() {
@@ -14,15 +19,7 @@ export default class Calculadora extends Component {
         // Aquí va la programación de js de los btns y func.
       <View>
         <Text style={styles.titulo}> Calculadora </Text>
-        <View style={styles.btn1}>
-            <Button title="1" />
-        </View>
-        <View style={styles.btn2}>
-            <Button title="2" />
-        </View>
-        <View style={styles.btn3}>
-            <Button title="3" />
-        </View>
+        <NumericPad/>
       </View>
     );
   }
