@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Button, StyleSheet, Text } from 'react-native';
+import { View, ToastAndroid, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 export default class NumericPad extends Component {
     constructor(props) {
@@ -13,26 +13,37 @@ export default class NumericPad extends Component {
             ] 
         }
     }
+
+    Message(press){
+        ToastAndroid.show(`Presionaste: ${press}`, ToastAndroid.SHORT)
+    }
+
     render() {
         return(
             <View>
                 <View style={flexStyle.container}>
                 {
                     this.state.buttons.map((_, i) =>
-                        <View style={flexStyle.row}>
+                        <View style={ flexStyle.row }>
                             {this.state.buttons[i].map(e =>
-                                <Button title={String(e)}/>
+                                <TouchableOpacity onPress={() => this.Message(e)} style={flexStyle.btn}>
+                                    <Text style={flexStyle.btnText}>{String(e)}</Text>
+                                </TouchableOpacity>
                             )}
                         </View>                
                     )
                 }
                 </View>
                 <View style={flexStyle.btnContainer}>
-                    <View style={flexStyle.btnExtra}>
-                        <Button title='%'/>
+                    <View style={flexStyle.btnFlex}>
+                        <TouchableOpacity style={flexStyle.btn}>
+                            <Text style={flexStyle.btnText}>%</Text>
+                        </TouchableOpacity>
                     </View>
-                    <View style={flexStyle.eq}>
-                        <Button title='='/>
+                    <View style={ flexStyle.eq }>
+                        <TouchableOpacity style={flexStyle.btn}>
+                            <Text style={flexStyle.btnText}>=</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
@@ -43,7 +54,7 @@ export default class NumericPad extends Component {
 const flexStyle = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        marginTop: 20,
+        marginTop: 60,
         marginLeft: 20,
         marginRight: 20,
     },
@@ -54,11 +65,22 @@ const flexStyle = StyleSheet.create({
         flexDirection: 'row',
         marginRight: 20,
         marginLeft: 20,
+        marginBottom: 20,
     },
-    btnExtra: {
+    btnFlex: {
         flex: 2,
     },
     eq: {
         flex: 6,
+    },
+    btn: {
+        alignItems: 'center',
+        backgroundColor: 'cyan',
+        margin: 2,
+        borderRadius: 8,
+    },
+    btnText: {
+        padding: 20,
+        fontSize: 28,
     }
 })
