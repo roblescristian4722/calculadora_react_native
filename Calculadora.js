@@ -7,9 +7,9 @@ export default class Calculadora extends Component {
     super(props);
     this.state = {
       buttons: [
-        ['1', '4', '7', '0'],
-        ['2', '5', '8', '.'],
-        ['3', '6', '9', '/'],
+        ['7', '4', '1', '0'],
+        ['8', '5', '2', '.'],
+        ['9', '6', '3', '/'],
         ['AC', '+', '-', '*']
       ],
       result: null,
@@ -25,19 +25,19 @@ export default class Calculadora extends Component {
     var localResult = 0
     switch (this.state.op) {
       case '+':
-        localResult = this.state.aux + parseInt(this.state.result)
+        localResult = this.state.aux + parseFloat(this.state.result)
       break;
       case '-':
-        localResult = this.state.aux - parseInt(this.state.result)
+        localResult = this.state.aux - parseFloat(this.state.result)
       break;
       case '*':
-        localResult = this.state.aux * parseInt(this.state.result)
+        localResult = this.state.aux * parseFloat(this.state.result)
       break;
       case '/':
-        localResult = this.state.aux / parseInt(this.state.result)
+        localResult = this.state.aux / parseFloat(this.state.result)
       break;
       case '%':
-        localResult = this.state.aux % parseInt(this.state.result)
+        localResult = this.state.aux % parseFloat(this.state.result)
       break;
     }
     this.setState({ op: null, result: localResult, aux: 0, period: false })
@@ -45,21 +45,17 @@ export default class Calculadora extends Component {
 
   operation(press) {
     if (this.state.validOp.includes(press)) {
-      let localAux = parseInt(this.state.result)
+      let localAux = parseFloat(this.state.result)
       this.setState({ op: press, aux: localAux, result: 'Ans', period: false })
     }
     else if (press === 'AC')
         this.setState({ result: null, aux: 0, op: null, period: false })
-    else if (press === '=') {
-      if (this.state.op !== null)
+    else if (press === '=' && this.state.op !== null)
         this.calculate()
-      else
-        this.setState({ result: null, aux: 0, op: null, period: false })
-    }
   }
 
   getData = (press) => {
-    if (parseInt(press) >= 0 && parseInt(press) <= 9) {
+    if (parseFloat(press) >= 0 && parseFloat(press) <= 9) {
       if (this.state.result === null || this.state.result === 'Ans')
         this.setState({ result: String(press) })
       else
