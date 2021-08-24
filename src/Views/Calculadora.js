@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ToastAndroid } from 'react-native';
-import BasicButton from './BasicButton';
-import NumericPad from './NumericPad'
+import NumericPad from '../Components/NumericPad'
 
 export default class Calculadora extends Component {
   constructor(props) {
@@ -92,6 +91,8 @@ const style = StyleSheet.create({
     borderColor: '#c6c6c6',
     marginTop: '3%',
     flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingBottom: '5%',
   },
   result: {
     color: 'white',

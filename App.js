@@ -25,7 +25,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import CALCULADORA from './Calculadora';
+import CALCULADORA from './src/Views/Calculadora';
 
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
