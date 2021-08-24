@@ -1,24 +1,18 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ToastAndroid } from 'react-native';
 import BasicButton from './BasicButton';
+import NumericPad from './NumericPad'
 
 export default class Calculadora extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      buttons: [
-        ['7', '4', '1', '0'],
-        ['8', '5', '2', '.'],
-        ['9', '6', '3', '/'],
-        ['AC', '+', '-', '*']
-      ],
       result: null,
-      aux: 0,
+      aux: null,
       op: null,
       period: false,
       validOp: ['+', '-', '*', '/', '%'],
     };
-
   }
 
   calculate() {
@@ -40,30 +34,33 @@ export default class Calculadora extends Component {
         localResult = this.state.aux % parseFloat(this.state.result)
       break;
     }
-    this.setState({ op: null, result: localResult, aux: 0, period: false })
+    return localResult
   }
 
   operation(press) {
     if (this.state.validOp.includes(press)) {
-      let localAux = parseFloat(this.state.result)
-      this.setState({ op: press, aux: localAux, result: 'Ans', period: false })
+      var localAux
+      if (this.state.result != null && this.state.aux != null)
+        localAux = this.calculate()
+      else
+        localAux = parseFloat(this.state.result)
+      this.setState({ op: press, aux: localAux, result: null, period: false })
     }
     else if (press === 'AC')
-        this.setState({ result: null, aux: 0, op: null, period: false })
+        this.setState({ result: null, aux: null, op: null, period: false })
     else if (press === '=' && this.state.op !== null)
-        this.calculate()
+        this.setState({ result: this.calculate(), aux: null, period: false })
   }
 
   getData = (press) => {
     if (parseFloat(press) >= 0 && parseFloat(press) <= 9) {
-      if (this.state.result === null || this.state.result === 'Ans')
-        this.setState({ result: String(press) })
+      if (this.state.result === null)
+        this.setState({ result: String(press), pending: false })
       else
         this.setState({ result: this.state.result + String(press) })
     }
-    else if (press === '.' && this.state.period === false) {
+    else if (press === '.' && this.state.period === false && this.state.result != null)
       this.setState({ result: this.state.result + String(press), period: true })
-    }
     else
       this.operation(press)
   }
@@ -73,73 +70,44 @@ export default class Calculadora extends Component {
       <View style={style.appContainer}>
 
         <View style={style.resContainer}>
+          <Text style={style.op}>{this.state.op}</Text>
           <Text style={style.result}>{this.state.result}</Text>
         </View>
-
-        <View style={style.numPad}>
-
-          <View style={style.container}>
-          {
-            this.state.buttons.map((_, i) =>
-              <View key={i} style={ style.row }>
-                {this.state.buttons[i].map((e, i) =>
-                  <BasicButton key={i} click={this.getData} text={String(e)}/>
-                )}
-              </View>
-            )
-          }
-          </View>
-
-          <View style={style.btnContainer}>
-            <View style={style.btnFlex}>
-              <BasicButton click={this.getData} text='%'/>
-            </View>
-            <View style={ style.eq }>
-              <BasicButton text='=' click={this.getData}/>
-            </View>
-
-          </View>
-        </View>
+        <NumericPad style={style.numPad} getData={this.getData}/>
       </View>
     );
   }
 }
 
 const style = StyleSheet.create({
-    numPad: {
-        height: '100%',
-        marginLeft: '5%',
-        marginRight: '5%',
-    },
-    appContainer: {
-        flexDirection: 'column',
-        height: '100%',
-    },
-    container: {
-        flexDirection: 'row',
-    },
-    row: {
-        flex: 1,
-    },
-    btnContainer: {
-        flexDirection: 'row',
-    },
-    btnFlex: {
-        flex: 2,
-    },
-    eq: {
-        flex: 6,
-    },
-    resContainer: {
-        marginLeft: '7%',
-        width: '86%',
-        borderWidth: 2,
-        borderColor: 'white',
-        marginTop: 40,
-    },
-    result: {
-        color: 'white',
-        textAlign: 'right',
-        margin: 2,
-    },
+  appContainer: {
+    height: '100%',
+    backgroundColor: '#2e3639',
+  },
+  resContainer: {
+    flex: 1,
+    marginLeft: '2.5%',
+    width: '95%',
+    borderWidth: 4,
+    borderColor: '#c6c6c6',
+    marginTop: '3%',
+    flexDirection: 'row',
+  },
+  result: {
+    color: 'white',
+    textAlign: 'right',
+    margin: 5,
+    fontSize: 62,
+    flex: 9,
+  },
+  op: {
+    color: 'white',
+    fontSize: 28,
+    flex: 1,
+    margin: 5,
+  },
+  numPad: {
+    margin: 5,
+    flex: 5,
+  }
 })

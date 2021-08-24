@@ -13,13 +13,11 @@ export default class BasicButton extends Component {
 
   render() {
     return (
-      <View>
-        <TouchableOpacity
+      <TouchableOpacity
           onPress={() => this.props.click(this.props.text)}
-          style={[styles.btn, this.props.style]}>
+          style={[styles.btn, {...this.props.style}]}>
           <Text style={styles.btnText}>{this.props.text}</Text>
-        </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
     )
   }
 }
@@ -27,12 +25,15 @@ export default class BasicButton extends Component {
 const styles = StyleSheet.create({
   btn: {
     alignItems: 'center',
-    backgroundColor: 'cyan',
-    margin: 2,
-    borderRadius: 8,
+    backgroundColor: '#656b6d',
+    flex: 1,
+    margin: 3,
+    borderRadius: 10,
+    justifyContent: 'center',
   },
   btnText: {
     padding: 20,
-    fontSize: 28,
+    fontSize: 34,
+    color: '#c6c6c6',
   },
 })
